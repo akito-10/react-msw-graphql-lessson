@@ -1,9 +1,9 @@
-import { createRoot } from 'react-dom/client'
-import App from './App'
-import './index.css'
-import { worker } from './mocks/browser';
+import { createRoot } from "react-dom/client";
+import App from "./App";
+import "./index.css";
+import { worker } from "./mocks/browser";
 
-const rootElement = document.getElementById('root');
+const rootElement = document.getElementById("root");
 
 if (rootElement) {
   const root = createRoot(rootElement);
@@ -14,15 +14,14 @@ if (rootElement) {
    */
   worker
     .start({
-      quiet: true,
-      onUnhandledRequest: 'bypass',
+      onUnhandledRequest: "bypass",
       serviceWorker: {
-        url: '/mockServiceWorker.js',
+        url: "/mockServiceWorker.js",
       },
     })
     .then(() => {
       return root.render(<App />);
     });
 } else {
-  throw new Error('No container with the name of root found');
+  throw new Error("No container with the name of root found");
 }
