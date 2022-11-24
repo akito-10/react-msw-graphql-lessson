@@ -1,9 +1,25 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { useState } from "react";
+import reactLogo from "./assets/react.svg";
+import "./App.css";
+import { useQuery, gql } from "@apollo/client";
+
+const GET_USER_INFO = gql`
+  query GetUserInfo {
+    users {
+      firstName
+      lastName
+    }
+  }
+`;
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
+  const { loading, error, data } = useQuery(GET_USER_INFO);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error : {error.message}</p>;
+
+  console.log(data);
 
   return (
     <div className="App">
@@ -28,7 +44,7 @@ function App() {
         Click on the Vite and React logos to learn more
       </p>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

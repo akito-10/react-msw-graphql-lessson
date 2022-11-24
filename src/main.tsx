@@ -2,8 +2,18 @@ import { createRoot } from "react-dom/client";
 import App from "./App";
 import "./index.css";
 import { worker } from "./mocks/browser";
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  gql,
+} from "@apollo/client";
 
 const rootElement = document.getElementById("root");
+const client = new ApolloClient({
+  uri: "http://localhost:5173/",
+  cache: new InMemoryCache(),
+});
 
 if (rootElement) {
   const root = createRoot(rootElement);
@@ -20,7 +30,11 @@ if (rootElement) {
       },
     })
     .then(() => {
-      return root.render(<App />);
+      return root.render(
+        <ApolloProvider client={client}>
+          <App />
+        </ApolloProvider>
+      );
     });
 } else {
   throw new Error("No container with the name of root found");
