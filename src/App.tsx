@@ -1,7 +1,7 @@
 import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import "./App.css";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery, gql, useMutation } from "@apollo/client";
 
 const GET_USER_INFO = gql`
   query GetUserInfo {
@@ -12,9 +12,18 @@ const GET_USER_INFO = gql`
   }
 `;
 
+const LOGIN = gql`
+  mutation Login($username: String!) {
+    login(username: $username) {
+      username
+    }
+  }
+`;
+
 function App() {
   const [count, setCount] = useState(0);
   const { loading, error, data } = useQuery(GET_USER_INFO);
+  const [mutateFunction] = useMutation(LOGIN);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error : {error.message}</p>;
@@ -33,7 +42,11 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
+        <button
+          onClick={() =>
+            mutateFunction({ variables: { username: "hogehoge" } })
+          }
+        >
           count is {count}
         </button>
         <p>
